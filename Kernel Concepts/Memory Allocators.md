@@ -53,18 +53,18 @@ https://www.kernel.org/doc/gorman/html/understand/understand005.html
 https://kernel.org/doc/gorman/html/understand/understand011.html
 https://blogs.oracle.com/linux/post/linux-slub-allocator-internals-and-debugging-1
 
-![[Pasted image 20240815141754.png]]
+![Cache Object Structure](/images/Pasted_image_20240815141754.png)
 
-![[Pasted image 20240815141928.png]]
+![Cache Tree](/images/Pasted_image_20240815141928.png)
 
 - In the SLUB allocator, a `kmem_cache` object represents a slab cache with per-CPU data managed by `kmem_cache_cpu`. Each slab is a `slab` object, and in kernels before 5.17, slab info is stored in a page object's union. `kmem_cache_node` represents a memory node.
 
 - Each slab cache in SLUB has a per-CPU active slab, a per-CPU partial slab list, and a per-node partial slab list, with slabs connected via `slab.next` or `slab.slab_list`. Objects are always allocated from the per-CPU active slab, and when it's full, the next slab becomes active.
 
-![[Pasted image 20240815144722.png]]
+![Per Slab Freelist](/images/Pasted_image_20240815144722.png)
 - The per-CPU active slab has a lockless freelist(`kmem_cache_cpu.slab.freelist`) and a regular freelist(`kmem_cache_cpu.freelist`). Object allocation is attempted from the lockless freelist first, which allows lock-free operations on architectures supporting `cmpxchg`, but other operations like manipulating the regular freelist still require locking.
 
-![[Pasted image 20240815145051.png]]
+![All Object Lists](/images/Pasted_image_20240815145051.png)
 
 - Both `kmem_cache_cpu.freelist` and `kmem_cache_cpu.slab.freelist` point to objects on the active slab, but they are distinct lists, each containing objects from the same slab.
 
@@ -84,4 +84,3 @@ https://blogs.oracle.com/linux/post/linux-slub-allocator-internals-and-debugging
 - When a CPU's active slab has no free objects, but the per-CPU partial slab list contains slabs with free objects, the first slab in this list becomes the new active slab. Its freelist is transferred to the CPU's lockless freelist, from which objects are allocated. This path, marked as "SLOWPATH 2," involves additional overhead compared to previous paths, as it requires updating the active slab and the per-CPU partial slab list, along with disabling preemption and acquiring `kmem_cache_cpu.lock`.
 
 - If the per-CPU slabs (active and partial) have no free objects, allocation attempts are made from the per-node partial slab list. Slabs enter the per-node partial slab list when a full slab becomes empty or partial and cannot be placed into the per-CPU partial slab list, either because the per-CPU list isn't supported or is already full. This mechanism allows the per-node partial slab list to accumulate slabs for future allocations.
-- 

@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "2de882f76bdc8754",
+        "id": "b465eb2138ef1f26",
         "type": "tabs",
         "children": [
           {
-            "id": "dfb6184ac19ee6b2",
+            "id": "52039396def8ef81",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -69,7 +69,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 370.5
   },
   "right": {
     "id": "bfd47995c548ea3b",
@@ -146,16 +146,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "dfb6184ac19ee6b2",
+  "active": "52039396def8ef81",
   "lastOpenFiles": [
+    "images/Pasted_image_20240815144722.png",
+    "Kernel Concepts/Memory Allocators.md",
     "Pasted image 20240815144722.png",
-    "images/Pasted image 20240815145051.png",
-    "images/Pasted image 20240815144722.png",
-    "images/Pasted image 20240815141928.png",
-    "images/Pasted image 20240815141754.png",
+    "images/Pasted_image_20240815145051.png",
+    "images/Pasted_image_20240815141928.png",
+    "images/Pasted_image_20240815141754.png",
     "images",
     "Pasted image 20240815145051.png",
-    "Kernel Concepts/Memory Allocators.md",
     "Pasted image 20240815141928.png",
     "Pasted image 20240815141754.png",
     "Kernel Concepts/Untitled.canvas",
